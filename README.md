@@ -44,7 +44,7 @@ Connect 4 is a two-player connection game in which the players take turns droppi
 
 1. **Clone the repository**:
    ```sh
-   git clone https://github.com/yourusername/connect4.git
+   git clone https://github.com/sakaisha/connect4.git
    cd connect4
    ```
 
