@@ -50,7 +50,7 @@ Connect 4 is a two-player connection game in which the players take turns droppi
 
 2. **Compile the program**:
    ```sh
-   gcc -o connect4 main.c board.c game.c highscore.c -lm
+   gcc -o Portfolio-Connect-4 main.c board.c game.c highscore.c -lm
    ```
 
 ## Usage
