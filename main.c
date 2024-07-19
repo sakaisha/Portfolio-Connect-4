@@ -32,19 +32,20 @@ void on_board_button_clicked(GtkWidget *widget, gpointer data) {
     if (game_over) return; // Prevent moves if the game is over
 
     int col = GPOINTER_TO_INT(data);
-    playerTurn(col);
-    scoreCheck();
-    update_board_display();
+    if (playerTurn(col)) {
+        scoreCheck();
+        update_board_display();
 
-    if (score_x > 0 || score_o > 0) {
-        const char *winner = (score_x > score_o) ? "Player X wins!" : "Player O wins!";
-        gtk_label_set_text(GTK_LABEL(current_player_label), winner);
-        High_Score();
-    } else {
-        currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
-        char label[10];
-        snprintf(label, 10, "Player %c", currentPlayer);
-        gtk_label_set_text(GTK_LABEL(current_player_label), label);
+        if (score_x > 0 || score_o > 0) {
+            const char *winner = (score_x > score_o) ? "Player X wins!" : "Player O wins!";
+            gtk_label_set_text(GTK_LABEL(current_player_label), winner);
+            High_Score();
+        } else {
+            currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+            char label[10];
+            snprintf(label, 10, "Player %c", currentPlayer);
+            gtk_label_set_text(GTK_LABEL(current_player_label), label);
+        }
     }
 }
 

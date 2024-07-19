@@ -11,11 +11,11 @@ int number;
 char currentPlayer = 'X';
 int game_over = 0; // Initialize game_over
 
-void playerTurn(int column) {
-    if (game_over) return; // Prevent moves if the game is over
+int playerTurn(int column) {
+    if (game_over) return 0; // Prevent moves if the game is over
 
     if (column < 1 || column > num_cols || board[0][column - 1] != '.') {
-        return; // Ignore invalid moves or if the column is full
+        return 0; // Ignore invalid moves or if the column is full
     }
 
     for (int i = num_rows - 1; i >= 0; i--) {
@@ -23,9 +23,10 @@ void playerTurn(int column) {
             board[i][column - 1] = currentPlayer;
             value = i;
             number = column;
-            break;
+            return 1; // Valid move
         }
     }
+    return 0; // Column is full
 }
 
 char checkFour(int a_1, int a_2, int b_1, int b_2, int c_1, int c_2, int d_1, int d_2) {
