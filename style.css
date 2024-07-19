@@ -1,0 +1,12 @@
+.empty {
+    background-color: blue;
+    color: white;
+}
+.player-x {
+    background-color: red;
+    color: white;
+}
+.player-o {
+    background-color: yellow;
+    color: black;
+}

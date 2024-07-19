@@ -8,14 +8,23 @@ int score_x = 0;
 int score_o = 0;
 int value;
 int number;
+char currentPlayer = 'X';
 
 void playerTurn(char player) {
     int column;
-    printf("Player %c, enter column (1-%d): ", player, num_cols);
+    printf("Player %c, enter column (1-%d) or 0 to exit: ", player, num_cols);
     scanf("%d", &column);
+    if (column == 0) {
+        printf("Exiting game.\n");
+        exit(0);
+    }
     while (column < 1 || column > num_cols || board[0][column - 1] != '.') {
         printf("Invalid move. Player %c, enter column (1-%d): ", player, num_cols);
         scanf("%d", &column);
+        if (column == 0) {
+            printf("Exiting game.\n");
+            exit(0);
+        }
     }
     for (int i = num_rows - 1; i >= 0; i--) {
         if (board[i][column - 1] == '.') {
