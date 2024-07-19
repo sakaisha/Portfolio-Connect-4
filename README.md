@@ -45,7 +45,7 @@ Connect 4 is a two-player connection game in which the players take turns droppi
 1. **Clone the repository**:
    ```sh
    git clone https://github.com/sakaisha/Portfolio-Connect-4.git
-   cd connect4
+   cd Portfolio-Connect-4
    ```
 
 2. **Compile the program**:
@@ -57,7 +57,7 @@ Connect 4 is a two-player connection game in which the players take turns droppi
 
 1. **Run the program**:
    ```sh
-   ./connect4
+   ./Portfolio-Connect-4
    ```
 
 ## Gameplay
