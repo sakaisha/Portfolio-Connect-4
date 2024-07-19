@@ -29,8 +29,10 @@ void update_board_display() {
 }
 
 void on_board_button_clicked(GtkWidget *widget, gpointer data) {
+    if (game_over) return; // Prevent moves if the game is over
+
     int col = GPOINTER_TO_INT(data);
-    playerTurn(currentPlayer);
+    playerTurn(col);
     scoreCheck();
     update_board_display();
 
@@ -51,7 +53,7 @@ void create_game_board(GtkWidget *grid) {
         for (int j = 0; j < num_cols; ++j) {
             board_buttons[i][j] = gtk_button_new_with_label(".");
             gtk_grid_attach(GTK_GRID(grid), board_buttons[i][j], j, i, 1, 1);
-            g_signal_connect(board_buttons[i][j], "clicked", G_CALLBACK(on_board_button_clicked), GINT_TO_POINTER(j));
+            g_signal_connect(board_buttons[i][j], "clicked", G_CALLBACK(on_board_button_clicked), GINT_TO_POINTER(j + 1));
             apply_css(board_buttons[i][j], "empty");
         }
     }
@@ -63,6 +65,10 @@ void start_new_game(GtkWidget *widget, gpointer data) {
     initializeBoard();
     update_board_display();
     gtk_label_set_text(GTK_LABEL(current_player_label), "Player X");
+    currentPlayer = 'X';
+    score_x = 0;
+    score_o = 0;
+    game_over = 0; // Reset game_over flag
 }
 
 void display_high_scores(GtkWidget *widget, gpointer data) {

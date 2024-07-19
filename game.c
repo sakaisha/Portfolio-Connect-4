@@ -9,26 +9,18 @@ int score_o = 0;
 int value;
 int number;
 char currentPlayer = 'X';
+int game_over = 0; // Initialize game_over
 
-void playerTurn(char player) {
-    int column;
-    printf("Player %c, enter column (1-%d) or 0 to exit: ", player, num_cols);
-    scanf("%d", &column);
-    if (column == 0) {
-        printf("Exiting game.\n");
-        exit(0);
+void playerTurn(int column) {
+    if (game_over) return; // Prevent moves if the game is over
+
+    if (column < 1 || column > num_cols || board[0][column - 1] != '.') {
+        return; // Ignore invalid moves or if the column is full
     }
-    while (column < 1 || column > num_cols || board[0][column - 1] != '.') {
-        printf("Invalid move. Player %c, enter column (1-%d): ", player, num_cols);
-        scanf("%d", &column);
-        if (column == 0) {
-            printf("Exiting game.\n");
-            exit(0);
-        }
-    }
+
     for (int i = num_rows - 1; i >= 0; i--) {
         if (board[i][column - 1] == '.') {
-            board[i][column - 1] = player;
+            board[i][column - 1] = currentPlayer;
             value = i;
             number = column;
             break;
@@ -68,18 +60,13 @@ void scoreCheck() {
             if ('O' == checkFour(value, number - 1, value, number - 1 + c, value, number - 1 + 2 * c, value, number - 1 + 3 * c)) score_o += 1;
         }
     }
+
+    if (score_x > 0 || score_o > 0) {
+        game_over = 1; // Set game_over flag when a player wins
+    }
 }
 
 void restartOrExit() {
-    char choice;
-    printf("Do you want to play again? (y/n): ");
-    scanf(" %c", &choice);
-    if (choice == 'y' || choice == 'Y') {
-        initializeBoard();
-        score_x = 0;
-        score_o = 0;
-    } else {
-        printf("Thank you for playing!\n");
-        exit(0);
-    }
+    // This function can be called from the GTK+ interface to restart the game or exit
+    // This code is no longer needed as restart and exit are handled by GTK+ buttons
 }

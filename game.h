@@ -6,8 +6,9 @@ extern int score_o;
 extern int value;
 extern int number;
 extern char currentPlayer;
+extern int game_over; 
 
-void playerTurn(char player);
+void playerTurn(int column);
 char checkFour(int a_1, int a_2, int b_1, int b_2, int c_1, int c_2, int d_1, int d_2);
 void scoreCheck();
 void restartOrExit();

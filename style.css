@@ -3,10 +3,10 @@
     color: white;
 }
 .player-x {
-    background-color: red;
-    color: white;
+    background-color: rgb(0, 0, 0);
+    color: black;
 }
 .player-o {
-    background-color: yellow;
+    background-color: rgb(0, 0, 0);
     color: black;
 }
