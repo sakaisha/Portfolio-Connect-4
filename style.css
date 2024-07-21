@@ -1,6 +1,6 @@
 .empty {
     background-color: blue;
-    color: white;
+    color: rgb(255, 0, 0);
 }
 .player-x {
     background-color: rgb(0, 0, 0);

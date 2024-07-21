@@ -37,28 +37,43 @@ char checkFour(int a_1, int a_2, int b_1, int b_2, int c_1, int c_2, int d_1, in
 }
 
 void scoreCheck() {
-    int i = 1, j = 1, counter = 0, a, c = 1, b = -1;
-    for (a = 0; a < 4; a++) {
-        i = -i;
-        j = j * pow(-1, counter);
-        counter++;
-        if (num_rows > value + i * 3 && value + i * 3 >= 0 && num_cols > number - 1 + j * 3 && number - 1 + j * 3 >= 0) {
-            if ('X' == checkFour(value, number - 1, value + i, number - 1 + j, value + i * 2, number - 1 + j * 2, value + i * 3, number - 1 + j * 3)) score_x += 1;
-            if ('O' == checkFour(value, number - 1, value + i, number - 1 + j, value + i * 2, number - 1 + j * 2, value + i * 3, number - 1 + j * 3)) score_o += 1;
+    // Check horizontal
+    for (int row = 0; row < num_rows; ++row) {
+        for (int col = 0; col < num_cols - 3; ++col) {
+            if (checkFour(row, col, row, col + 1, row, col + 2, row, col + 3) != 'a') {
+                if (board[row][col] == 'X') score_x += 1;
+                if (board[row][col] == 'O') score_o += 1;
+            }
         }
-        if ('X' == checkFour(value, number - 1, value + j, number - 1 + i, value - j, number - 1 - i, value - 2 * j, number - 1 - 2 * i)) score_x += 1;
-        if ('O' == checkFour(value, number - 1, value + j, number - 1 + i, value - j, number - 1 - i, value - 2 * j, number - 1 - 2 * i)) score_o += 1;
     }
-    for (a = 0; a < 2; a++) {
-        c = -c;
-        b *= -1;
-        if (num_rows > value + 3 * c && value + 3 * c >= 0) {
-            if ('X' == checkFour(value, number - 1, value + c, number - 1, value + 2 * c, number - 1, value + 3 * c, number - 1)) score_x += 1;
-            if ('O' == checkFour(value, number - 1, value + c, number - 1, value + 2 * c, number - 1, value + 3 * c, number - 1)) score_o += 1;
+
+    // Check vertical
+    for (int col = 0; col < num_cols; ++col) {
+        for (int row = 0; row < num_rows - 3; ++row) {
+            if (checkFour(row, col, row + 1, col, row + 2, col, row + 3, col) != 'a') {
+                if (board[row][col] == 'X') score_x += 1;
+                if (board[row][col] == 'O') score_o += 1;
+            }
         }
-        if (num_cols > number - 1 + 3 * c && number - 1 + 3 * c >= 0) {
-            if ('X' == checkFour(value, number - 1, value, number - 1 + c, value, number - 1 + 2 * c, value, number - 1 + 3 * c)) score_x += 1;
-            if ('O' == checkFour(value, number - 1, value, number - 1 + c, value, number - 1 + 2 * c, value, number - 1 + 3 * c)) score_o += 1;
+    }
+
+    // Check diagonal (bottom-left to top-right)
+    for (int row = 0; row < num_rows - 3; ++row) {
+        for (int col = 0; col < num_cols - 3; ++col) {
+            if (checkFour(row, col, row + 1, col + 1, row + 2, col + 2, row + 3, col + 3) != 'a') {
+                if (board[row][col] == 'X') score_x += 1;
+                if (board[row][col] == 'O') score_o += 1;
+            }
+        }
+    }
+
+    // Check diagonal (top-left to bottom-right)
+    for (int row = 3; row < num_rows; ++row) {
+        for (int col = 0; col < num_cols - 3; ++col) {
+            if (checkFour(row, col, row - 1, col + 1, row - 2, col + 2, row - 3, col + 3) != 'a') {
+                if (board[row][col] == 'X') score_x += 1;
+                if (board[row][col] == 'O') score_o += 1;
+            }
         }
     }
 
