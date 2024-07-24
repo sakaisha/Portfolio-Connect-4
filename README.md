@@ -187,4 +187,3 @@ This project is part of my ALX portfolio project. I am grateful for the support 
 - **GTK+ Integration**: The game now uses GTK+ for the graphical user interface (GUI). This enhances the user experience with a visually appealing and interactive interface.
 - **New Files Added**:
     - `style.css`: CSS file for styling the GTK+ buttons.
-```
