@@ -3,110 +3,55 @@
 #include "game.h"
 #include "highscore.h"
 
-/* Global variables for the game board buttons and the current player label */
 GtkWidget *board_buttons[num_rows][num_cols];
 GtkWidget *current_player_label;
 
-/**
- * apply_css - Applies a CSS class to a GTK widget
- * @widget: The GTK widget to which the CSS class is applied
- * @class_name: The CSS class to apply
- */
-void apply_css(GtkWidget *widget, const gchar *class_name)
-{
+void apply_css(GtkWidget *widget, const gchar *class_name) {
     GtkStyleContext *context;
-
     context = gtk_widget_get_style_context(widget);
     gtk_style_context_add_class(context, class_name);
 }
 
-/**
- * update_board_display - Updates the display of the game board
- *
- * This function iterates through each cell of the game board and updates
- * the corresponding button's label and CSS class based on the cell's value.
- */
-void update_board_display(void)
-{
-    int i, j;
-    char label[2];
-
-    for (i = 0; i < num_rows; ++i)
-    {
-        for (j = 0; j < num_cols; ++j)
-        {
-            label[0] = board[i][j];
-            label[1] = '\0';
+void update_board_display() {
+    for (int i = 0; i < num_rows; ++i) {
+        for (int j = 0; j < num_cols; ++j) {
+            char label[2] = {board[i][j], '\0'};
             gtk_button_set_label(GTK_BUTTON(board_buttons[i][j]), label);
-            if (board[i][j] == '.')
-            {
+            if (board[i][j] == '.') {
                 apply_css(board_buttons[i][j], "empty");
-            }
-            else if (board[i][j] == 'X')
-            {
+            } else if (board[i][j] == 'X') {
                 apply_css(board_buttons[i][j], "player-x");
-            }
-            else if (board[i][j] == 'O')
-            {
+            } else if (board[i][j] == 'O') {
                 apply_css(board_buttons[i][j], "player-o");
             }
         }
     }
 }
 
-/**
- * on_board_button_clicked - Handles the event when a board button is clicked
- * @widget: The clicked GTK widget
- * @data: The data passed to the callback, in this case, the column number
- *
- * This function handles a player's move when a board button is clicked. It
- * updates the board, checks for a win, updates the display, and changes the
- * current player.
- */
-void on_board_button_clicked(GtkWidget *widget, gpointer data)
-{
-    int col;
-    char label[10];
+void on_board_button_clicked(GtkWidget *widget, gpointer data) {
+    if (game_over) return; // Prevent moves if the game is over
 
-    if (game_over)
-        return; /* Prevent moves if the game is over */
-
-    col = GPOINTER_TO_INT(data);
-    if (playerTurn(col))
-    {
+    int col = GPOINTER_TO_INT(data);
+    if (playerTurn(col)) {
         scoreCheck();
         update_board_display();
 
-        if (score_x > 0 || score_o > 0)
-        {
+        if (score_x > 0 || score_o > 0) {
             const char *winner = (score_x > score_o) ? "Player X wins!" : "Player O wins!";
             gtk_label_set_text(GTK_LABEL(current_player_label), winner);
             High_Score();
-        }
-        else
-        {
+        } else {
             currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+            char label[10];
             snprintf(label, 10, "Player %c", currentPlayer);
             gtk_label_set_text(GTK_LABEL(current_player_label), label);
         }
     }
 }
 
-/**
- * create_game_board - Creates the game board UI
- * @grid: The GTK grid container for the game board buttons
- *
- * This function creates the game board buttons, attaches them to the grid,
- * and sets up the event handlers for button clicks.
- */
-void create_game_board(GtkWidget *grid)
-{
-    int i, j;
-
-    for (i = 0; i < num_rows; ++i)
-    {
-        for (j = 0; j < num_cols; ++j)
-        {
+void create_game_board(GtkWidget *grid) {
+    for (int i = 0; i < num_rows; ++i) {
+        for (int j = 0; j < num_cols; ++j) {
             board_buttons[i][j] = gtk_button_new_with_label(".");
             gtk_grid_attach(GTK_GRID(grid), board_buttons[i][j], j, i, 1, 1);
             g_signal_connect(board_buttons[i][j], "clicked", G_CALLBACK(on_board_button_clicked), GINT_TO_POINTER(j + 1));
@@ -116,43 +61,20 @@ void create_game_board(GtkWidget *grid)
     update_board_display();
 }
 
-/**
- * start_new_game - Starts a new game
- * @widget: The GTK widget that triggered the callback
- * @data: The data passed to the callback, in this case, the GTK grid container
- *
- * This function initializes the game board, resets scores and the game_over flag,
- * and updates the display to start a new game.
- */
-void start_new_game(GtkWidget *widget, gpointer data)
-{
+void start_new_game(GtkWidget *widget, gpointer data) {
     GtkWidget *grid = GTK_WIDGET(data);
-
     initializeBoard();
     update_board_display();
     gtk_label_set_text(GTK_LABEL(current_player_label), "Player X");
     currentPlayer = 'X';
     score_x = 0;
     score_o = 0;
-    game_over = 0; /* Reset game_over flag */
+    game_over = 0; // Reset game_over flag
 }
 
-/**
- * display_high_scores - Displays the high scores in a dialog
- * @widget: The GTK widget that triggered the callback
- * @data: The data passed to the callback, in this case, the parent window
- *
- * This function creates a dialog to display the high scores read from the
- * high scores file.
- */
-void display_high_scores(GtkWidget *widget, gpointer data)
-{
+void display_high_scores(GtkWidget *widget, gpointer data) {
     GtkWidget *dialog, *content_area, *label;
     GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
-    GString *high_scores_text;
-    int scores[Highscore] = {0}, i;
-    FILE *file;
-
     dialog = gtk_dialog_new_with_buttons("High Scores",
                                          GTK_WINDOW(data),
                                          flags,
@@ -161,22 +83,18 @@ void display_high_scores(GtkWidget *widget, gpointer data)
                                          NULL);
     content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 
-    high_scores_text = g_string_new("\n=== High Scores ===\n");
-    file = fopen("High_scores.txt", "r");
-    if (file == NULL)
-    {
+    GString *high_scores_text = g_string_new("\n=== High Scores ===\n");
+    int scores[Highscore] = {0}, i;
+    FILE *file = fopen("High_scores.txt", "r");
+    if (file == NULL) {
         g_string_append(high_scores_text, "No high scores available.\n");
-    }
-    else
-    {
-        for (i = 0; i < Highscore; i++)
-        {
+    } else {
+        for (i = 0; i < Highscore; i++) {
             fscanf(file, "%d", &scores[i]);
         }
         fclose(file);
 
-        for (i = 0; i < Highscore && scores[i] != 0; i++)
-        {
+        for (i = 0; i < Highscore && scores[i] != 0; i++) {
             g_string_append_printf(high_scores_text, "%d. %d\n", i + 1, scores[i]);
         }
     }
@@ -189,29 +107,17 @@ void display_high_scores(GtkWidget *widget, gpointer data)
     g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_widget_destroy), dialog);
 }
 
-/**
- * main - Entry point for the GTK application
- * @argc: Argument count
- * @argv: Argument vector
- *
- * This function initializes the GTK application, creates the main window,
- * sets up the game board and control buttons, and starts the GTK main loop.
- *
- * Return: 0 on success
- */
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     GtkWidget *window;
     GtkWidget *grid;
     GtkWidget *vbox;
     GtkWidget *start_button;
     GtkWidget *highscore_button;
     GtkWidget *exit_button;
-    GtkCssProvider *provider;
 
     gtk_init(&argc, &argv);
 
-    provider = gtk_css_provider_new();
+    GtkCssProvider *provider = gtk_css_provider_new();
     gtk_css_provider_load_from_path(provider, "style.css", NULL);
     gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
                                               GTK_STYLE_PROVIDER(provider),
@@ -249,5 +155,5 @@ int main(int argc, char *argv[])
 
     gtk_main();
 
-    return (0);
+    return 0;
 }
