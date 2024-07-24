@@ -3,15 +3,20 @@
 #include "game.h"
 #include "highscore.h"
 
+/* Global widget for the board buttons */
 GtkWidget *board_buttons[num_rows][num_cols];
+
+/* Widget to display the current player */
 GtkWidget *current_player_label;
 
+/* Function to apply CSS class to a widget */
 void apply_css(GtkWidget *widget, const gchar *class_name) {
     GtkStyleContext *context;
     context = gtk_widget_get_style_context(widget);
     gtk_style_context_add_class(context, class_name);
 }
 
+/* Function to update the display of the game board */
 void update_board_display() {
     for (int i = 0; i < num_rows; ++i) {
         for (int j = 0; j < num_cols; ++j) {
@@ -28,6 +33,7 @@ void update_board_display() {
     }
 }
 
+/* Callback function for board button clicks */
 void on_board_button_clicked(GtkWidget *widget, gpointer data) {
     if (game_over) return; // Prevent moves if the game is over
 
@@ -49,6 +55,7 @@ void on_board_button_clicked(GtkWidget *widget, gpointer data) {
     }
 }
 
+/* Function to create the game board */
 void create_game_board(GtkWidget *grid) {
     for (int i = 0; i < num_rows; ++i) {
         for (int j = 0; j < num_cols; ++j) {
@@ -61,6 +68,7 @@ void create_game_board(GtkWidget *grid) {
     update_board_display();
 }
 
+/* Function to start a new game */
 void start_new_game(GtkWidget *widget, gpointer data) {
     GtkWidget *grid = GTK_WIDGET(data);
     initializeBoard();
@@ -72,6 +80,7 @@ void start_new_game(GtkWidget *widget, gpointer data) {
     game_over = 0; // Reset game_over flag
 }
 
+/* Main function */
 int main(int argc, char *argv[]) {
     GtkWidget *window;
     GtkWidget *grid;
