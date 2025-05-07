@@ -24,10 +24,6 @@ Connect 4 Game
 ## Introduction
 Connect 4 is a two-player connection game in which the players take turns dropping colored discs from the top into a seven-column, six-row vertically suspended grid. The pieces fall straight down, occupying the next available space within the column. The objective of the game is to be the first to form a horizontal, vertical, or diagonal line of four of one's own discs.
 
-[Link to Deployed Site](https://your-deployed-site-link)
-[Final Project Blog Article](https://your-blog-article-link)
-[Author's LinkedIn](https://www.linkedin.com/in/sakaisha)
-
 ## Installation
 
 ### Prerequisites
