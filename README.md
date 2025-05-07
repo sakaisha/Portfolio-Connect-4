@@ -3,7 +3,6 @@
 This project is a Connect 4 game implemented in C, as part of my ALX portfolio project. I am humbly working on this project all alone, ensuring it meets all requirements and functionalities of the classic Connect 4 game.
 
 ## Table of Contents
-- [Project Name](#project-name)
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -18,8 +17,6 @@ This project is a Connect 4 game implemented in C, as part of my ALX portfolio p
 - [Acknowledgements](#acknowledgements)
 - [Updates and New Features](#updates-and-new-features)
 
-## Project Name
-Connect 4 Game
 
 ## Introduction
 Connect 4 is a two-player connection game in which the players take turns dropping colored discs from the top into a seven-column, six-row vertically suspended grid. The pieces fall straight down, occupying the next available space within the column. The objective of the game is to be the first to form a horizontal, vertical, or diagonal line of four of one's own discs.
